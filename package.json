@@ -5,16 +5,6 @@
   "author": "Louis Arge",
   "type": "module",
   "main": "electron/main.js",
-  "bin": {
-    "dbdiff": "./bin/cli.js",
-    "dbdiff-app": "./bin/cli.js"
-  },
-  "files": [
-    "bin",
-    "dist",
-    "dist-server",
-    "electron"
-  ],
   "scripts": {
     "dev": "concurrently -k -n vite,server -c blue,green \"vite\" \"tsx watch --clear-screen=false server/index.ts\"",
     "dev:vite": "vite",
@@ -28,7 +18,6 @@
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"server/**/*.ts\"",
     "preview": "vite preview",
-    "prepublishOnly": "npm run build",
     "dist": "npm run build && electron-builder --mac",
     "dist:dir": "npm run build && electron-builder --mac --dir",
     "install-local-production": "npm run dist:dir && node bin/install-local.js"
@@ -46,7 +35,7 @@
     "zustand": "^5.0.11"
   },
   "build": {
-    "appId": "com.dbdiff.app",
+    "appId": "app.dbdiff.client",
     "productName": "dbdiff",
     "asar": false,
     "files": [
