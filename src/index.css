@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+}
+
+
+/* Text color system */
+.text-primary {
+  @apply text-stone-900 dark:text-white;
+}
+
+.text-secondary {
+  @apply text-stone-500 dark:text-white/80;
+}
+
+.text-tertiary {
+  @apply text-stone-400 dark:text-white/60;
+}
+
+/* Interactive text color system with hover states */
+.text-interactive {
+  @apply text-stone-500 dark:text-white/50;
+}
+.text-interactive:hover {
+  @apply text-stone-600 dark:text-white/70;
+}
+
+.text-interactive-subtle {
+  @apply text-stone-400 dark:text-white/40;
+}
+.text-interactive-subtle:hover {
+  @apply text-stone-500 dark:text-white/60;
+}
+
+/* Buttons should always show pointer cursor */
+button {
+  cursor: pointer;
+}

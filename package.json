@@ -1,0 +1,90 @@
+{
+  "name": "dbdiff-app",
+  "version": "0.0.1",
+  "description": "A database diff tool",
+  "author": "Louis Arge",
+  "type": "module",
+  "main": "electron/main.js",
+  "bin": {
+    "dbdiff": "./bin/cli.js",
+    "dbdiff-app": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "dist-server",
+    "electron"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n vite,server -c blue,green \"vite\" \"tsx watch --clear-screen=false server/index.ts\"",
+    "dev:vite": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "build:vite": "tsc -b && vite build",
+    "build:server": "tsc -p tsconfig.server.json",
+    "build": "npm run build:vite && npm run build:server",
+    "start": "node electron/patch-dev-plist.js && electron .",
+    "dev:electron": "node electron/patch-dev-plist.js && concurrently -k -n vite,server,electron -c blue,green,magenta \"vite\" \"tsx watch --clear-screen=false server/index.ts\" \"node electron/wait-for-vite.js\"",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"server/**/*.ts\"",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build",
+    "dist": "npm run build && electron-builder --mac",
+    "dist:dir": "npm run build && electron-builder --mac --dir",
+    "install-local-production": "npm run dist:dir && node bin/install-local.js"
+  },
+  "dependencies": {
+    "@codemirror/lang-sql": "^6.10.0",
+    "@tanstack/react-virtual": "^3.13.18",
+    "@uiw/react-codemirror": "^4.25.4",
+    "express": "^4.21.0",
+    "fuse.js": "^7.1.0",
+    "lucide-react": "^0.563.0",
+    "pg": "^8.13.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zustand": "^5.0.11"
+  },
+  "build": {
+    "appId": "com.dbdiff.app",
+    "productName": "dbdiff",
+    "asar": false,
+    "files": [
+      "electron/",
+      "dist/",
+      "dist-server/",
+      "package.json"
+    ],
+    "mac": {
+      "icon": "electron/icon.icns",
+      "identity": null,
+      "target": "dir"
+    },
+    "directories": {
+      "output": "release"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/express": "^4.17.21",
+    "@types/node": "^24.10.1",
+    "@types/pg": "^8.11.10",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "concurrently": "^9.1.0",
+    "electron": "^35.1.2",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.19.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
+  }
+}
