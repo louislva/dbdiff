@@ -1,6 +1,6 @@
 {
   "name": "dbdiff-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A database client for PostgreSQL",
   "author": "Louis Arge",
   "type": "module",
@@ -32,7 +32,7 @@
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"server/**/*.ts\"",
-    "install-local-production": "npm run build:electron && node bin/install-local.js"
+    "install-from-source": "npm run build:electron && node bin/install-local.js"
   },
   "dependencies": {
     "@codemirror/lang-sql": "^6.10.0",
