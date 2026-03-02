@@ -1,26 +1,22 @@
 {
   "name": "dbdiff-app",
   "version": "0.0.1",
-  "description": "A database diff tool",
+  "description": "A database client for PostgreSQL",
   "author": "Louis Arge",
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently -k -n vite,server -c blue,green \"vite\" \"tsx watch --clear-screen=false server/index.ts\"",
-    "dev:vite": "vite",
-    "dev:server": "tsx watch server/index.ts",
+    "dev:electron": "node electron/patch-dev-plist.js && concurrently -k -n vite,server,electron -c blue,green,magenta \"vite\" \"tsx watch --clear-screen=false server/index.ts\" \"node electron/wait-for-vite.js\"",
     "build:vite": "tsc -b && vite build",
     "build:server": "tsc -p tsconfig.server.json",
     "build": "npm run build:vite && npm run build:server",
+    "build:electron": "npm run build && electron-builder --mac --dir",
     "start": "node electron/patch-dev-plist.js && electron .",
-    "dev:electron": "node electron/patch-dev-plist.js && concurrently -k -n vite,server,electron -c blue,green,magenta \"vite\" \"tsx watch --clear-screen=false server/index.ts\" \"node electron/wait-for-vite.js\"",
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"server/**/*.ts\"",
-    "preview": "vite preview",
-    "dist": "npm run build && electron-builder --mac",
-    "dist:dir": "npm run build && electron-builder --mac --dir",
-    "install-local-production": "npm run dist:dir && node bin/install-local.js"
+    "install-local-production": "npm run build:electron && node bin/install-local.js"
   },
   "dependencies": {
     "@codemirror/lang-sql": "^6.10.0",
