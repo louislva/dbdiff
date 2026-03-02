@@ -161,7 +161,10 @@ app.whenReady().then(() => {
   if (isMac) {
     app.dock.setIcon(path.join(__dirname, "icon.png"));
   }
-  createWindow();
+  createWindow().catch((err) => {
+    console.error("Failed to create window:", err);
+    app.quit();
+  });
 });
 
 app.on("window-all-closed", () => {

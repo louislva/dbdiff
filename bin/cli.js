@@ -2,6 +2,7 @@
 
 import { execSync } from "child_process";
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -26,10 +27,31 @@ const pkg = JSON.parse(
 
 console.log(`\nInstalling dbdiff v${pkg.version} from source...\n`);
 
-// Step 1: Install all dependencies (including devDependencies needed for building)
-console.log("Installing dependencies...");
-execSync("npm install --include=dev", { cwd: packageDir, stdio: "inherit" });
+// When run via npx, the package lives inside node_modules/ which causes npm to
+// hoist dependencies to the parent. electron-builder then can't find production
+// deps to bundle into the app. Fix: copy to a standalone temp directory first.
+const insideNodeModules = packageDir
+  .split(path.sep)
+  .includes("node_modules");
 
-// Step 2: Build the Electron app
-console.log("\nBuilding...");
-execSync("npm run install-from-source", { cwd: packageDir, stdio: "inherit" });
+let buildDir = packageDir;
+
+if (insideNodeModules) {
+  buildDir = fs.mkdtempSync(path.join(os.tmpdir(), "dbdiff-build-"));
+  console.log("Copying source to temporary build directory...");
+  execSync(`cp -R "${packageDir}/." "${buildDir}"`, { stdio: "inherit" });
+}
+
+try {
+  // Step 1: Install all dependencies (including devDependencies needed for building)
+  console.log("Installing dependencies...");
+  execSync("npm install --include=dev", { cwd: buildDir, stdio: "inherit" });
+
+  // Step 2: Build and install the Electron app
+  console.log("\nBuilding...");
+  execSync("npm run install-from-source", { cwd: buildDir, stdio: "inherit" });
+} finally {
+  if (insideNodeModules) {
+    fs.rmSync(buildDir, { recursive: true, force: true });
+  }
+}
