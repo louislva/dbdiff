@@ -14,5 +14,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.on("cloud-auth-callback", handler);
     return () => ipcRenderer.removeListener("cloud-auth-callback", handler);
   },
+  sendUpdateCheckResult: (result) => {
+    ipcRenderer.send("update-check-result", result);
+  },
   platform: process.platform,
 });

@@ -4,6 +4,11 @@ interface ElectronAPI {
   onCloudAuthCallback: (
     callback: (data: { key: string; state: string }) => void,
   ) => () => void;
+  sendUpdateCheckResult: (result: {
+    updateAvailable: boolean;
+    currentVersion: string;
+    latestVersion: string | null;
+  }) => void;
   platform: string;
 }
 

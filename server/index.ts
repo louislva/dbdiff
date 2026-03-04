@@ -371,6 +371,50 @@ app.post("/api/export", async (req, res) => {
   }
 });
 
+// Read current version from package.json once at startup
+const currentVersion: string = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, "package.json"), "utf-8"),
+).version;
+
+// Check npm registry for latest version
+app.get("/api/check-update", async (_req, res) => {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(
+      "https://registry.npmjs.org/dbdiff-app/latest",
+      { signal: controller.signal },
+    );
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      res.json({ currentVersion, latestVersion: null, updateAvailable: false });
+      return;
+    }
+
+    const data = (await response.json()) as { version?: string };
+    const latestVersion = data.version ?? null;
+
+    // Simple semver comparison: split on dots, compare numerically
+    let updateAvailable = false;
+    if (latestVersion) {
+      const current = currentVersion.split(".").map(Number);
+      const latest = latestVersion.split(".").map(Number);
+      for (let i = 0; i < 3; i++) {
+        if ((latest[i] ?? 0) > (current[i] ?? 0)) {
+          updateAvailable = true;
+          break;
+        }
+        if ((latest[i] ?? 0) < (current[i] ?? 0)) break;
+      }
+    }
+
+    res.json({ currentVersion, latestVersion, updateAvailable });
+  } catch {
+    res.json({ currentVersion, latestVersion: null, updateAvailable: false });
+  }
+});
+
 // Serve built frontend if it exists
 if (hasBuiltFrontend) {
   app.use(express.static(distPath));

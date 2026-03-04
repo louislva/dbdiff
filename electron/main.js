@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import { app, BrowserWindow, Menu, ipcMain, dialog } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -47,6 +47,10 @@ function buildMenu() {
                 click: () => sendMenuAction("scan-localhost"),
               },
               { type: "separator" },
+              {
+                label: "Check for Updates...",
+                click: () => sendMenuAction("check-for-updates"),
+              },
               {
                 label: "Reset UI State",
                 click: () => sendMenuAction("reset-ui-state"),
@@ -126,6 +130,26 @@ async function createWindow() {
   ipcMain.on("set-database-menu-enabled", (_event, enabled) => {
     if (exportSchemaItem) exportSchemaItem.enabled = enabled;
     if (exportSchemaAndDataItem) exportSchemaAndDataItem.enabled = enabled;
+  });
+
+  // Show native dialog with update check result
+  ipcMain.on("update-check-result", (_event, { updateAvailable, currentVersion, latestVersion }) => {
+    if (updateAvailable) {
+      dialog.showMessageBox(win, {
+        type: "info",
+        title: "Update Available",
+        message: `A new version of dbdiff is available!`,
+        detail: `Current: v${currentVersion}\nLatest: v${latestVersion}\n\nRun the following to update:\nnpx dbdiff-app@latest install-from-source`,
+        buttons: ["OK"],
+      });
+    } else {
+      dialog.showMessageBox(win, {
+        type: "info",
+        title: "No Updates",
+        message: `You're on the latest version (v${currentVersion}).`,
+        buttons: ["OK"],
+      });
+    }
   });
 
   // In dev mode, load from Vite dev server (HMR). Otherwise use the Express server.

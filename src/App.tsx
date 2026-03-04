@@ -24,6 +24,7 @@ import {
   CommandPalette,
   DatabaseSwitcher,
   ScanSuccessModal,
+  UpdateBanner,
 } from "./components";
 import type {
   DatabaseConfig,
@@ -402,6 +403,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen bg-stone-50 dark:bg-[#0a0a0a] text-primary antialiased transition-colors duration-200">
+      <UpdateBanner />
       <GlobalShortcuts
         onOpenTableSwitcher={() => setShowCommandPalette(true)}
         onOpenDatabaseSwitcher={() => setShowDatabaseSwitcher(true)}
