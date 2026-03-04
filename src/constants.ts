@@ -1,6 +1,6 @@
 export const CLOUD_URL =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:3090"
+    ? "http://localhost:3000"
     : "https://cloud.dbdiff.app";
 
 // Set to true to show cloud linking/sync UI
