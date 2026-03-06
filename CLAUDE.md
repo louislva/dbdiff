@@ -4,10 +4,10 @@
 
 ```bash
 npm install
-npm run dev
+npm run dev:electron
 ```
 
-This runs Vite (port 4089) and the backend (port 4088) concurrently. Vite proxies `/api` requests to the backend.
+This runs Vite (port 4089), the backend (port 4088), and Electron concurrently. Vite proxies `/api` requests to the backend.
 
 ## Formatting
 
@@ -46,7 +46,7 @@ To unlink when done:
 npm rm -g dbdiff-app
 ```
 
-## Production build
+## Install from source
 
 ```bash
 npm run build        # Build frontend + server
@@ -77,7 +77,7 @@ Always use semantic text color classes instead of hardcoded colors:
 
 The app must work in all of these contexts — code defensively:
 
-1. **Electron on macOS** (primary target) — `npx dbdiff-app` or `npm start`
+1. **Electron on macOS** (primary target) — installed via `npx dbdiff-app install-from-source`, then launched from Applications like any other app
 2. **Browser on localhost** — `npm run dev` (Vite + Express)
 3. **Browser on a domain** — future cloud-hosted deployment
 4. **Electron on Linux/Windows** — not a priority yet, but don't do anything that would make it impossible
@@ -111,7 +111,7 @@ On non-macOS Electron and in browsers, the web dropdown menus show as normal.
 
 - `npm run dev` — Vite HMR + Express, opens in browser (no Electron)
 - `npm run dev:electron` — Vite HMR + Express (tsx watch) + Electron concurrently
-- `npm run build && node bin/cli.js` — full production test
+- `npm run build && npm start` — full production test
 
 ## Architecture
 
