@@ -15,3 +15,4 @@ export { CommandPalette } from "./CommandPalette";
 export { DatabaseSwitcher } from "./DatabaseSwitcher";
 export { ScanSuccessModal } from "./ScanSuccessModal";
 export { ErrorBoundary } from "./ErrorBoundary";
+export { UpdateBanner } from "./UpdateBanner";

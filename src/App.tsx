@@ -24,6 +24,7 @@ import {
   CommandPalette,
   DatabaseSwitcher,
   ScanSuccessModal,
+  UpdateBanner,
 } from "./components";
 import type {
   DatabaseConfig,
@@ -428,6 +429,7 @@ function App() {
         activeDatabaseConfig={activeDatabaseConfig}
         hideMenus={isElectronMac}
       />
+      <UpdateBanner />
 
       {activeTab?.databaseConfigId && (
         <InnerTabBar

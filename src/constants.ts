@@ -10,3 +10,5 @@ export const CLOUD_ENABLED = false;
 export const LOCALHOST_SCANNING_ENABLED = true;
 
 export const PAGE_SIZE = 500;
+
+export const APP_VERSION = "0.1.1";
