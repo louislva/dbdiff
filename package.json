@@ -1,6 +1,6 @@
 {
   "name": "dbdiff-app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A database client for PostgreSQL",
   "author": "Louis Arge",
   "type": "module",

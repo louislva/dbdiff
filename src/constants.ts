@@ -11,4 +11,4 @@ export const LOCALHOST_SCANNING_ENABLED = true;
 
 export const PAGE_SIZE = 500;
 
-export const APP_VERSION = "0.1.1";
+export const APP_VERSION = "0.1.2";

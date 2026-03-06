@@ -25,6 +25,13 @@ npm run typecheck
 
 Always run this after making changes to verify there are no type errors.
 
+## Versioning
+
+The version number is stored in **two places** — always update both:
+
+1. `package.json` → `"version"`
+2. `src/constants.ts` → `APP_VERSION`
+
 ## Testing the CLI locally (without publishing)
 
 ```bash
