@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Copy, Check } from "lucide-react";
+import { APP_VERSION } from "../constants";
 
 const UPDATE_COMMAND = "npx dbdiff-app@latest install-from-source";
 
 export function UpdateBanner() {
-  const [updateAvailable, setUpdateAvailable] = useState(true);
+  const [updateAvailable, setUpdateAvailable] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // TODO: Add update check logic here
+  useEffect(() => {
+    fetch("https://registry.npmjs.org/dbdiff-app/latest")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.version && data.version !== APP_VERSION) {
+          setUpdateAvailable(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   if (!updateAvailable || dismissed) return null;
 
